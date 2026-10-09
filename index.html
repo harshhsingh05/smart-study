@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Study Planner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <navbar>
+        <h1>Smart Study</h1>
+        <ul id="nav-links"></ul>
+    </navbar>
+
+    <!-- PAGE 1: HOME -->
+    <div id="home" class="page-section active-page">
+        <div class="container">
+            <div class="hero">
+                <h2>Welcome to Smart Study</h2>
+                <p>Your Intelligent Task Planner & Live Stopwatch Tracker</p>
+                <button onclick="showPage('planner')" class="btn">Go to Planner</button>
+            </div>
+
+            <h3>Features Overview</h3>
+            <div class="grid">
+                <div class="card">
+                    <h4>User Account Support</h4>
+                    <p>Tasks & archives stay completely separate for each logged-in student.</p>
+                </div>
+                <div class="card">
+                    <h4>Open Stopwatch Tracker</h4>
+                    <p>Timer counts up continuously. Pause whenever you take a break!</p>
+                </div>
+                <div class="card">
+                    <h4>Archive Logbook</h4>
+                    <p>Completed tasks move automatically to your Archive table with exact time spent.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 2: AUTH (LOGIN / REGISTER) -->
+    <div id="auth" class="page-section">
+        <!-- Login Form -->
+        <div class="container" id="login-box" style="max-width: 400px;">
+            <h2>Login to Smart Study</h2>
+            <div style="margin-top: 15px;">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="login-username" placeholder="e.g. UserX">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="login-password">
+                </div>
+                <button onclick="loginUser()" class="btn" style="width: 100%;">Login</button>
+                <p style="margin-top: 15px; text-align: center;">
+                    New student? <a onclick="toggleAuthForm()" style="color:#00d2d3; cursor:pointer;">Register Account</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Register Form -->
+        <div class="container" id="register-box" style="max-width: 400px; display: none;">
+            <h2>Create New Account</h2>
+            <div style="margin-top: 15px;">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="reg-username" placeholder="e.g. UserY">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="reg-password">
+                </div>
+                <button onclick="registerUser()" class="btn btn-success" style="width: 100%;">Register</button>
+                <p style="margin-top: 15px; text-align: center;">
+                    Already registered? <a onclick="toggleAuthForm()" style="color:#00d2d3; cursor:pointer;">Back to Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 3: PLANNER (Tasks & Archive) -->
+    <div id="planner" class="page-section">
+        <div class="container">
+            <h2>Study Planner</h2>
+            <p>Schedule your subjects and start tracking whenever you are ready.</p>
+
+            <!-- Form -->
+            <div style="margin-top: 20px;">
+                <h3>Create New Session</h3>
+                <div class="form-group">
+                    <label>Subject Name</label>
+                    <input type="text" id="subject" placeholder="e.g. Python, Operating Systems">
+                </div>
+                <div class="form-group">
+                    <label>Topic / Description</label>
+                    <input type="text" id="topic" placeholder="e.g. File Handling, CPU Scheduling">
+                </div>
+                <div class="form-group">
+                    <label>Scheduled Date</label>
+                    <input type="date" id="sessionDate">
+                </div>
+                <button onclick="addPlannedSession()" class="btn">Add Session to Planner</button>
+            </div>
+
+            <hr style="margin: 30px 0; border-color: #485460;">
+
+            <h3>Upcoming Sessions</h3>
+            <div id="plannedSessionsList" style="margin-top: 15px;"></div>
+
+            <hr style="margin: 30px 0; border-color: #485460;">
+
+            <h3>Session Archive (Completed History)</h3>
+            <div id="archiveList"></div>
+        </div>
+    </div>
+
+    <!-- PAGE 4: DASHBOARD (Active Timer & Stats) -->
+    <div id="dashboard" class="page-section">
+        <div class="container">
+            <h2>Live Study Dashboard</h2>
+
+            <!-- Active Session Details -->
+            <div id="activeSessionInfo" style="margin-top: 20px;"></div>
+
+            <!-- Timer Box -->
+            <div class="card" id="timerControls" style="display: none; text-align: center;">
+                <h3>Live Session Stopwatch</h3>
+                <div class="timer-display" id="timer">00:00</div>
+                <div>
+                    <button id="pauseBtn" class="btn btn-warning" onclick="togglePauseResume()">Pause (Take Break)</button>
+                    <button class="btn btn-success" onclick="completeSession()">Complete Session</button>
+                </div>
+            </div>
+
+            <hr style="margin: 30px 0; border-color: #485460;">
+
+            <h3>My Statistics Overview</h3>
+            <div class="grid">
+                <div class="card">
+                    <h4>Total Sessions</h4>
+                    <p style="font-size: 24px; font-weight: bold; color:#00d2d3;" id="statTotal">0</p>
+                </div>
+                <div class="card">
+                    <h4>Completed</h4>
+                    <p style="font-size: 24px; font-weight: bold; color:#1dd1a1;" id="statCompleted">0</p>
+                </div>
+                <div class="card">
+                    <h4>Pending / Active</h4>
+                    <p style="font-size: 24px; font-weight: bold; color:#fca510;" id="statPending">0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 5: ABOUT -->
+    <div id="about" class="page-section">
+        <div class="container">
+            <h2>About Smart Study</h2>
+            <p style="margin-top: 10px;">
+                Smart Study is a web application designed to help students track real-time focus sessions without arbitrary timer cut-offs.
+            </p>
+
+            <h3 style="margin-top: 20px;">Key Code Highlights:</h3>
+            <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                <li><strong>Local Storage Isolation:</strong> Uses keys structured as `user_sessionName` so user data never leaks across accounts.</li>
+                <li><strong>Open-Ended Timer:</strong> JavaScript `setInterval()` runs an incremental stopwatch algorithm instead of a countdown.</li>
+                <li><strong>Archive Data Persistence:</strong> Completed tasks move to an array in LocalStorage containing total exact time taken.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
